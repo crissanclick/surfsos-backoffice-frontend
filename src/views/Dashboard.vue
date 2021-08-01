@@ -44,7 +44,7 @@
 
             <div class="mx-5">
               <h4 class="text-2xl font-semibold text-gray-700">8,282</h4>
-              <div class="text-gray-500">New Users</div>
+              <div class="text-gray-500">Total Users</div>
             </div>
           </div>
         </div>
@@ -77,40 +77,7 @@
 
             <div class="mx-5">
               <h4 class="text-2xl font-semibold text-gray-700">200,521</h4>
-              <div class="text-gray-500">Total Orders</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="w-full px-6 mt-6 sm:w-1/2 xl:w-1/3 xl:mt-0">
-          <div
-            class="flex items-center px-5 py-6 bg-white rounded-md shadow-sm"
-          >
-            <div class="p-3 bg-pink-600 bg-opacity-75 rounded-full">
-              <svg
-                class="w-8 h-8 text-white"
-                viewBox="0 0 28 28"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M6.99998 11.2H21L22.4 23.8H5.59998L6.99998 11.2Z"
-                  fill="currentColor"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M9.79999 8.4C9.79999 6.08041 11.6804 4.2 14 4.2C16.3196 4.2 18.2 6.08041 18.2 8.4V12.6C18.2 14.9197 16.3196 16.8 14 16.8C11.6804 16.8 9.79999 14.9197 9.79999 12.6V8.4Z"
-                  stroke="currentColor"
-                  stroke-width="2"
-                />
-              </svg>
-            </div>
-
-            <div class="mx-5">
-              <h4 class="text-2xl font-semibold text-gray-700">215,542</h4>
-              <div class="text-gray-500">Available Products</div>
+              <div class="text-gray-500">QRs generated</div>
             </div>
           </div>
         </div>
@@ -128,50 +95,48 @@
             <thead>
               <tr>
                 <th
-                  class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50"
+                    class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50"
                 >
-                  Name
+                  Image
+                </th>
+                <th
+                    class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50"
+                >
+                  Id
                 </th>
                 <th
                   class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50"
                 >
-                  Title
+                  Expiration date
                 </th>
                 <th
                   class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50"
                 >
-                  Status
+                  User Id
                 </th>
-                <th
-                  class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50"
-                >
-                  Role
-                </th>
+                <th class="px-6 py-3 border-b border-gray-200 bg-gray-50"></th>
                 <th class="px-6 py-3 border-b border-gray-200 bg-gray-50"></th>
               </tr>
             </thead>
 
             <tbody class="bg-white">
-              <tr v-for="(u, index) in users" :key="index">
+              <tr v-for="(qr, index) in qr_list" :key="index">
                 <td
-                  class="px-6 py-4 border-b border-gray-200 whitespace-nowrap"
+                    class="px-6 py-4 border-b border-gray-200 whitespace-nowrap"
                 >
-                  <div class="flex items-center">
-                    <div class="flex-shrink-0 w-10 h-10">
-                      <img
-                        class="w-10 h-10 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                        alt=""
-                      />
+                  <div class="ml-4">
+                    <div class="text-sm font-medium leading-5 text-gray-900">
+                      <img v-bind:src="qr.hash" v-bind:alt="qr.id" width="50" />
                     </div>
-
-                    <div class="ml-4">
-                      <div class="text-sm font-medium leading-5 text-gray-900">
-                        {{ u.name }}
-                      </div>
-                      <div class="text-sm leading-5 text-gray-500">
-                        {{ u.email }}
-                      </div>
+                  </div>
+                </td>
+                
+                <td
+                    class="px-2 py-2 border-b border-gray-200 whitespace-nowrap"
+                >
+                  <div class="ml-4">
+                    <div class="text-sm font-medium leading-5 text-gray-900">
+                      {{ qr.id }}
                     </div>
                   </div>
                 </td>
@@ -180,34 +145,16 @@
                   class="px-6 py-4 border-b border-gray-200 whitespace-nowrap"
                 >
                   <div class="text-sm leading-5 text-gray-900">
-                    {{ u.title }}
-                  </div>
-                  <div class="text-sm leading-5 text-gray-500">
-                    {{ u.title2 }}
+                    {{ qr.expireDate }}
                   </div>
                 </td>
 
                 <td
-                  class="px-6 py-4 border-b border-gray-200 whitespace-nowrap"
+                    class="px-6 py-4 border-b border-gray-200 whitespace-nowrap"
                 >
-                  <span
-                    class="inline-flex px-2 text-xs font-semibold leading-5 text-green-800 bg-green-100 rounded-full"
-                    >{{ u.status }}</span
-                  >
-                </td>
-
-                <td
-                  class="px-6 py-4 text-sm leading-5 text-gray-500 border-b border-gray-200 whitespace-nowrap"
-                >
-                  {{ u.role }}
-                </td>
-
-                <td
-                  class="px-6 py-4 text-sm font-medium leading-5 text-right border-b border-gray-200 whitespace-nowrap"
-                >
-                  <a href="#" class="text-indigo-600 hover:text-indigo-900"
-                    >Edit</a
-                  >
+                  <div class="text-sm leading-5 text-gray-900">
+                    {{ qr.userId }}
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -220,31 +167,29 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
+import { useApi } from "../modules/api";
 
-interface User {
-  name: string;
-  email: string;
-  title: string;
-  title2: string;
-  status: string;
-  role: string;
+interface Qr {
+  hash: string;
+  expireDate: string;
+  userId: string;
 }
 
 export default defineComponent({
   setup() {
-    const testUser: User = {
-      name: "John Doe",
-      email: "john@example.com",
-      title: "Software Engineer",
-      title2: "Web dev",
-      status: "Active",
-      role: "Owner",
-    };
+    const { data, get } = useApi(
+        "qr/list", window.localStorage.getItem('surfsos_backoffice_token')
+    );
+    const qr_list = ref();
 
-    const users = ref<User[]>([...Array(10).keys()].map(() => testUser));
+    get().then(() => {
+      console.log(data.value);
+      qr_list.value = data.value;
+      console.log(qr_list);
+    });
 
     return {
-      users,
+      qr_list,
     };
   },
 });

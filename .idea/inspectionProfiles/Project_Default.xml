@@ -1,0 +1,15 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="MessDetectorValidationInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false">
+      <option name="customRulesets">
+        <list>
+          <RulesetDescriptor>
+            <option name="name" value="Magento PHPMD rule set" />
+            <option name="path" value="$PROJECT_DIR$/../../project-fluidra-orion-pro-esales/magento/dev/tests/static/testsuite/Magento/Test/Php/_files/phpmd/ruleset.xml" />
+          </RulesetDescriptor>
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
