@@ -3,6 +3,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import { useAuth } from "./modules/auth"
 
 import Dashboard from "./views/Dashboard.vue";
+import CreateQr from "./views/CreateQr.vue";
 import Forms from "./views/Forms.vue";
 import Tables from "./views/Tables.vue";
 import UIElements from "./views/UIElements.vue";
@@ -29,6 +30,11 @@ const routes: RouteRecordRaw[] = [
     path: "/dashboard",
     name: "Dashboard",
     component: Dashboard,
+  },
+  {
+    path: "/qr",
+    name: "CreateQr",
+    component: CreateQr,
   },
   {
     path: "/forms",

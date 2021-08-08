@@ -75,15 +75,16 @@ import {
 import { useRouter } from "vue-router";
 import { useApi } from "../modules/api";
 import { useAuth } from "../modules/auth";
+import { useEnvVars } from '../modules/env';
+
 interface LoginPayload {
   username: string;
   password: string;
 }
 export default defineComponent({
   setup() {
-    const { loading, data, post, errorMessage } = useApi(
-        "login"
-    );
+    const { loadEnv } = useEnvVars();
+    const { loading, data, post, errorMessage } = useApi(loadEnv().backoffice_url + "login");
     const { setUser } = useAuth();
     const router = useRouter();
     const payload = reactive<LoginPayload>({

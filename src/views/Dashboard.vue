@@ -76,7 +76,7 @@
             </div>
 
             <div class="mx-5">
-              <h4 class="text-2xl font-semibold text-gray-700">200,521</h4>
+              <h4 class="text-2xl font-semibold text-gray-700">{{ totalQrs }}</h4>
               <div class="text-gray-500">QRs generated</div>
             </div>
           </div>
@@ -91,6 +91,24 @@
         <div
           class="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg"
         >
+          <div
+              class="flex flex-col items-center px-5 py-5 bg-white border-t xs:flex-row xs:justify-between"
+          >
+            <div class="inline-flex mt-2 xs:mt-0">
+              <button
+                  class="px-4 py-2 text-sm font-semibold text-gray-800 bg-gray-300 rounded-l hover:bg-gray-400"
+                  v-on:click="paginatePrev"
+              >
+                Prev
+              </button>
+              <button
+                  class="px-4 py-2 text-sm font-semibold text-gray-800 bg-gray-300 rounded-r hover:bg-gray-400"
+                  v-on:click="paginateNext"
+              >
+                Next
+              </button>
+            </div>
+          </div>
           <table class="min-w-full">
             <thead>
               <tr>
@@ -114,8 +132,6 @@
                 >
                   User Id
                 </th>
-                <th class="px-6 py-3 border-b border-gray-200 bg-gray-50"></th>
-                <th class="px-6 py-3 border-b border-gray-200 bg-gray-50"></th>
               </tr>
             </thead>
 
@@ -130,7 +146,7 @@
                     </div>
                   </div>
                 </td>
-                
+
                 <td
                     class="px-2 py-2 border-b border-gray-200 whitespace-nowrap"
                 >
@@ -150,7 +166,7 @@
                 </td>
 
                 <td
-                    class="px-6 py-4 border-b border-gray-200 whitespace-nowrap"
+                    class="px-6 py-6 border-b border-gray-200 whitespace-nowrap"
                 >
                   <div class="text-sm leading-5 text-gray-900">
                     {{ qr.userId }}
@@ -159,6 +175,24 @@
               </tr>
             </tbody>
           </table>
+          <div
+              class="flex flex-col items-center px-5 py-5 bg-white border-t xs:flex-row xs:justify-between"
+          >
+            <div class="inline-flex mt-2 xs:mt-0">
+              <button
+                  class="px-4 py-2 text-sm font-semibold text-gray-800 bg-gray-300 rounded-l hover:bg-gray-400"
+                  v-on:click="paginatePrev"
+              >
+                Prev
+              </button>
+              <button
+                  class="px-4 py-2 text-sm font-semibold text-gray-800 bg-gray-300 rounded-r hover:bg-gray-400"
+                  v-on:click="paginateNext"
+              >
+                Next
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -166,8 +200,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
-import { useApi } from "../modules/api";
+import { defineComponent, ref, computed } from "vue";
+import { useEnvVars } from '../modules/env';
+import { useAuthenticatedApi } from "../modules/api";
+import { useQrApi } from "../modules/qr";
+import { usePagination } from "vue-composable";
 
 interface Qr {
   hash: string;
@@ -177,19 +214,47 @@ interface Qr {
 
 export default defineComponent({
   setup() {
-    const { data, get } = useApi(
-        "qr/list", window.localStorage.getItem('surfsos_backoffice_token')
-    );
+    const { loadEnv } = useEnvVars();
+    const { totalCount } = useQrApi();
+    const { get } = useAuthenticatedApi(loadEnv().backoffice_url + "qr/list");
+    const totalQrs = ref(0);
     const qr_list = ref();
-
-    get().then(() => {
-      console.log(data.value);
-      qr_list.value = data.value;
-      console.log(qr_list);
+    const { currentPage, pageSize, next, prev } = usePagination({
+      currentPage: 0,
+      pageSize: 6,
+      total: computed(() => totalQrs.value)
     });
+    totalCount().then((data) => {
+        totalQrs.value = data.total;
+        updateList();
+    });
+
+    const updateList = () => {
+      const requestString = {
+        'offset': (currentPage.value > 1)
+            ? pageSize.value * (currentPage.value - 1)
+            : 0,
+        'limit': pageSize.value
+      }
+      get(requestString).then(response => {
+        qr_list.value = response;
+      });
+    }
+
+    const paginatePrev = () => {
+      prev();
+      updateList();
+    };
+    const paginateNext = () => {
+      next();
+      updateList();
+    };
 
     return {
       qr_list,
+      totalQrs,
+      paginatePrev,
+      paginateNext
     };
   },
 });

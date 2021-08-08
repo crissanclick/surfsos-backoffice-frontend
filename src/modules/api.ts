@@ -4,14 +4,15 @@ import { computed, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuth, AUTH_TOKEN } from './auth'
 
-
-export const useApiWithAuth = (endpoint: string) => {
-    const { user } = useAuth()
-
-    return useApi(endpoint, user?.value ? user.value[ AUTH_TOKEN ] : undefined)
+export const useAuthenticatedApi = (endpoint: string) => {
+    const { user } = useAuth();
+    return useApi(
+        endpoint,
+        user?.value ? user.value[ AUTH_TOKEN ] : window.localStorage.getItem('surfsos_backoffice_token')
+    );
 }
 
-export const useApi = (endpoint: string, access_token?: string) => {
+export const useApi = (endpoint: string, access_token?: any) => {
     const router = useRouter()
     const api = axios.create({
         baseURL: 'http://localhost:8032/',
@@ -29,6 +30,20 @@ export const useApi = (endpoint: string, access_token?: string) => {
         error.value = undefined
 
         return api.post(endpoint, payload)
+            .then(res => data.value = res.data)
+            .catch(e => {
+                error.value = e
+
+                throw e
+            })
+            .finally(() => loading.value = false)
+    }
+
+    const put = (params?: Record<string, any>, payload?: Record<string, any>) => {
+        loading.value = true
+        error.value = undefined
+
+        return api.put(endpoint + '/' + params, payload)
             .then(res => data.value = res.data)
             .catch(e => {
                 error.value = e
@@ -130,6 +145,7 @@ export const useApi = (endpoint: string, access_token?: string) => {
         error,
         get,
         post,
+        put,
         del,
         errorMessage,
         errorDetails,
