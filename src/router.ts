@@ -4,13 +4,8 @@ import { useAuth } from "./modules/auth"
 
 import Dashboard from "./views/Dashboard.vue";
 import CreateQr from "./views/CreateQr.vue";
-import Forms from "./views/Forms.vue";
-import Tables from "./views/Tables.vue";
-import UIElements from "./views/UIElements.vue";
+import View from "./views/customers/View.vue";
 import Login from "./views/Login.vue";
-import Modal from "./views/Modal.vue";
-import Card from "./views/Card.vue";
-import Blank from "./views/Blank.vue";
 import Logout from "./views/Logout.vue";
 import NotFound from "./views/NotFound.vue";
 
@@ -37,34 +32,9 @@ const routes: RouteRecordRaw[] = [
     component: CreateQr,
   },
   {
-    path: "/forms",
-    name: "Forms",
-    component: Forms,
-  },
-  {
-    path: "/cards",
-    name: "Cards",
-    component: Card,
-  },
-  {
-    path: "/tables",
-    name: "Tables",
-    component: Tables,
-  },
-  {
-    path: "/ui-elements",
-    name: "UIElements",
-    component: UIElements,
-  },
-  {
-    path: "/modal",
-    name: "Modal",
-    component: Modal,
-  },
-  {
-    path: "/blank",
-    name: "Blank",
-    component: Blank,
+    path: "/customers/view",
+    name: "View",
+    component: View,
   },
 ];
 
