@@ -7,7 +7,7 @@ interface EnvVars {
 export const useEnvVars = () => {
     const loadEnv = (): EnvVars => {
         return <EnvVars>({
-            backoffice_url: 'http://localhost:8032/',
+            backoffice_url: 'http://localhost:8040/',
             qrengine_url: 'http://localhost:8030/'
         });
     }
